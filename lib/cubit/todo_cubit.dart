@@ -1,8 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_toto_block/data/models/todo.dart';
+import 'package:flutter_toto_block/data/repository.dart';
 import 'package:meta/meta.dart';
 
 part 'todo_state.dart';
 
 class TodoCubit extends Cubit<TodoState> {
-  TodoCubit() : super(TodoInitial());
+
+  final Repository repository;
+
+  TodoCubit({this.repository}) : super(TodoInitial());
+
+  void ferchTodos() {
+      repository.fetchTodos().then((todos){
+        emit(TodoLoaded(todos: todos));
+      });
+  }
 }
