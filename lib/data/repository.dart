@@ -9,6 +9,7 @@ class Repository{
 
   Future<List<Todo>> fetchTodos() async {
     final todoRaw=await networkService.fetchTodos();
+    // print(todoRaw);
     return todoRaw.map((e) => Todo.fromJson(e)).toList();
   }
   

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toto_block/constants/strings.dart';
 import 'package:flutter_toto_block/cubit/todo_cubit.dart';
+import 'package:flutter_toto_block/data/models/todo.dart';
 
 class TodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     BlocProvider.of<TodoCubit>(context).ferchTodos();
 
     return Scaffold(
@@ -22,9 +22,65 @@ class TodoScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
-        child: Text("sss"),
+      body: BlocBuilder<TodoCubit, TodoState>(
+        builder: (context, state) {
+          if (!(state is TodoLoaded)) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final todos = (state as TodoLoaded).todos;
+          return SingleChildScrollView(
+            child: Column(
+              children: todos.map((e) => _todo(e,context)).toList(),
+            ),
+          );
+        },
       ),
     );
   }
+
+
+  Widget _todo(Todo todo,context){
+    return Dismissible(
+      key: Key("${todo.id}"),
+      child:  _todoTile(todo, context),
+      background: Container(color: Colors.indigo,),
+    );
+  }
+
+  Widget _todoTile(Todo todo, context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey[200],
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(todo.todoMessage),
+          _completionIndicator(todo),
+        ],
+      ),
+    );
+  }
+
+  Widget _completionIndicator(Todo todo) {
+    return Container(
+      width: 20.0,
+      height: 20.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50.0),
+        border: Border.all(
+          width: 4.0,
+          color: todo.isCompleted ? Colors.green : Colors.red,
+        ),
+      ),
+    );
+  }
+
 }
