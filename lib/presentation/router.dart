@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_toto_block/constants/strings.dart';
+import 'package:flutter_toto_block/cubit/todo_cubit.dart';
 import 'package:flutter_toto_block/presentation/screens/add_todo_screen.dart';
 import 'package:flutter_toto_block/presentation/screens/edit_todo_screen.dart';
 import 'package:flutter_toto_block/presentation/screens/todo_screen.dart';
@@ -10,11 +13,24 @@ class AppRouter{
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_)=>TodoScreen());
-      case "/add_tod":
-        return MaterialPageRoute(builder: (_)=>AddTodoScreen());
-      case "/edit_todo":
-        return MaterialPageRoute(builder: (_)=>EditTodoScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (BuildContext context)=> TodoCubit(),
+            child: TodoScreen(),
+          ),
+        );
+      case EDIT_TODO_ROUTE:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            child: EditTodoScreen(),
+          ),
+        );
+      case ADD_TODO_ROUTE:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            child: AddTodoScreen(),
+          ),
+        );
       default:
         return null;
     }
