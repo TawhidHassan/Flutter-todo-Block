@@ -43,6 +43,10 @@ class TodoScreen extends StatelessWidget {
     return Dismissible(
       key: Key("${todo.id}"),
       child:  _todoTile(todo, context),
+      confirmDismiss: (_) async{
+        BlocProvider.of<TodoCubit>(context).changeCompletion(todo);
+        return false;
+      },
       background: Container(color: Colors.indigo,),
     );
   }

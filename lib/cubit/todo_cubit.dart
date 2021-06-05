@@ -21,4 +21,20 @@ class TodoCubit extends Cubit<TodoState> {
       });
     });
   }
+
+  void changeCompletion(Todo todo) {
+      repository.changeCompletion(!todo.isCompleted,todo.id).then((isChange) {
+
+        if(isChange){
+          todo.isCompleted=!todo.isCompleted;
+          updateTodoList();
+        }
+      });
+  }
+
+  void updateTodoList() {
+    final currentState = state;
+    if (currentState is TodoLoaded)
+      emit(TodoLoaded(todos: currentState.todos));
+  }
 }

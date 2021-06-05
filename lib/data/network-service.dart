@@ -17,4 +17,15 @@ class NetworkService{
     }
   }
 
+  Future<bool> patchTodo(Map<String, String> patchObj, int id) async {
+    try {
+
+      await patch(Uri.parse(baseUrl + "/todos/$id"), body: patchObj);
+      return true;
+
+    } catch (e) {
+      return false;
+    }
+  }
+
 }

@@ -12,5 +12,10 @@ class Repository{
     // print(todoRaw);
     return todoRaw.map((e) => Todo.fromJson(e)).toList();
   }
+
+  Future<bool> changeCompletion(bool isCompleted, int id) async{
+    final patchObj = { "isCompleted": isCompleted.toString() };
+    return await networkService.patchTodo(patchObj, id);
+  }
   
 }
