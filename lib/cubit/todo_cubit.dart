@@ -46,4 +46,12 @@ class TodoCubit extends Cubit<TodoState> {
        emit(TodoLoaded(todos: todoList));
      }
   }
+
+  void deleteTodo(Todo todo) {
+    final currentState = state;
+    if (currentState is TodoLoaded) {
+      final todoList = currentState.todos.where((element) => element.id != todo.id).toList();
+      emit(TodoLoaded(todos: todoList));
+    }
+  }
 }
