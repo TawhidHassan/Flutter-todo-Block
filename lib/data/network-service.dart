@@ -28,4 +28,13 @@ class NetworkService{
     }
   }
 
+  Future<Map> addTodo(Map<String, String> todoObj)async {
+    try {
+      final response = await post(Uri.parse(baseUrl + "/todos"), body: todoObj);
+      return jsonDecode(response.body);
+    } catch (e) {
+      return null;
+    }
+  }
+
 }
